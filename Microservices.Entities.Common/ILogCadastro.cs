@@ -7,7 +7,6 @@ namespace Microservices.Entities.Common
     public interface ILogCadastro
     {
         Guid UsuarioCadastroId { get; set; }
-        IUsuario UsuarioCadastro { get; set; }
 
         DateTime DataHoraCadastro { get; set; }
     }

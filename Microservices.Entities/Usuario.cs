@@ -3,7 +3,7 @@ using System;
 
 namespace Microservices.Entities
 {
-    public  class Usuario: IUsuario
+    public  class Usuario
     {
         public Guid Id { get; set; }
 

@@ -17,10 +17,10 @@ namespace Microservices.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Produto>().HasData(
-                new Produto { Id = 1, Nome = "Mesa", Preco = 200 },
-                new Produto { Id = 2, Nome = "Mesa Modelo velho", Inativo = true, Preco = 70.5M },
-                new Produto { Id = 4, Nome = "note", Inativo = false, Preco = 2500 });
+            //modelBuilder.Entity<Produto>().HasData(
+            //    new Produto { Id = 1, Nome = "Mesa", Preco = 200 },
+            //    new Produto { Id = 2, Nome = "Mesa Modelo velho", Inativo = true, Preco = 70.5M },
+            //    new Produto { Id = 4, Nome = "note", Inativo = false, Preco = 2500 });
         }
     }
 }

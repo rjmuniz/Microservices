@@ -15,7 +15,7 @@ namespace Microservices.Entities
 
 
         public Guid UsuarioCadastroId { get; set; }
-        public IUsuario UsuarioCadastro { get; set; }
+        public Usuario UsuarioCadastro { get; set; }
         public DateTime DataHoraCadastro { get; set; }
 
     }
