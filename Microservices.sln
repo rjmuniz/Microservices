@@ -17,6 +17,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5FEC406B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Data.Integration.Test", "Microservices.Data.Integration.Test\Microservices.Data.Integration.Test.csproj", "{680037CD-AF2F-4DED-A671-EA73A2E04C6F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositories", "Repositories", "{A5F12CED-BC32-430C-96C1-7174B27C76D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Repository.Interfaces", "Microservices.Repository.Interfaces\Microservices.Repository.Interfaces.csproj", "{CC0F23B9-77F9-4676-9D0C-21B360690FBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Repository.SqlServer", "Microservices.Repository\Microservices.Repository.SqlServer.csproj", "{069A0795-2DFF-426F-A7BB-218D1CE393FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Repository.Dapper", "Microservices.Repository.Dapper\Microservices.Repository.Dapper.csproj", "{1B37129E-D943-4117-8E4B-6D741C169F25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +47,18 @@ Global
 		{680037CD-AF2F-4DED-A671-EA73A2E04C6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{680037CD-AF2F-4DED-A671-EA73A2E04C6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{680037CD-AF2F-4DED-A671-EA73A2E04C6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0F23B9-77F9-4676-9D0C-21B360690FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0F23B9-77F9-4676-9D0C-21B360690FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0F23B9-77F9-4676-9D0C-21B360690FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0F23B9-77F9-4676-9D0C-21B360690FBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{069A0795-2DFF-426F-A7BB-218D1CE393FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{069A0795-2DFF-426F-A7BB-218D1CE393FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{069A0795-2DFF-426F-A7BB-218D1CE393FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{069A0795-2DFF-426F-A7BB-218D1CE393FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B37129E-D943-4117-8E4B-6D741C169F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B37129E-D943-4117-8E4B-6D741C169F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B37129E-D943-4117-8E4B-6D741C169F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B37129E-D943-4117-8E4B-6D741C169F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +68,9 @@ Global
 		{FD9C3950-EDE9-4221-9C9A-A766D0A7ECF5} = {37BF7A38-0A17-45F7-99A0-EDEAAB923BFB}
 		{03A41CA7-1C45-49F4-9579-1D07D9107B3F} = {0F2899A4-15F7-4E5E-AF01-686530289D5B}
 		{680037CD-AF2F-4DED-A671-EA73A2E04C6F} = {5FEC406B-4264-45D6-B2FD-8087EECEA077}
+		{CC0F23B9-77F9-4676-9D0C-21B360690FBC} = {A5F12CED-BC32-430C-96C1-7174B27C76D8}
+		{069A0795-2DFF-426F-A7BB-218D1CE393FD} = {A5F12CED-BC32-430C-96C1-7174B27C76D8}
+		{1B37129E-D943-4117-8E4B-6D741C169F25} = {A5F12CED-BC32-430C-96C1-7174B27C76D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34C260F7-A929-4F81-9639-FD0B292CACD4}

@@ -11,12 +11,12 @@ using Xunit.Sdk;
 
 namespace Microservices.Data.Integration.Test
 {
-    public class ProdutoTest:IDisposable
+    public class DbContextTest : IDisposable
     {
         private readonly DataContext _dataContext;
         private readonly ITestOutputHelper log;
 
-        public ProdutoTest(ITestOutputHelper log)
+        public DbContextTest(ITestOutputHelper log)
         {
             this.log = log;
             var options = new DbContextOptionsBuilder<DataContext>()
@@ -25,56 +25,56 @@ namespace Microservices.Data.Integration.Test
             _dataContext = new DataContext(options);
 
             _dataContext.Database.EnsureCreated();
-            
-            
-            
+
+
+
         }
         [Fact]
-        public async Task InsercaoTest()
+        public void InsercaoTest()
         {
 
             _dataContext.Produtos.Count().Should().Be(0);
-            var expected = await AddItemAsync();
-            var actual = await _dataContext.Produtos.FirstAsync();
+            var expected = AddItem();
+            var actual = _dataContext.Produtos.First();
             actual.Should().Be(actual);
             Assert.Equal(expected, actual);
 
             _dataContext.Produtos.Count().Should().Be(1);
         }
         [Fact]
-        public async Task InsercaoDuasVezesTest()
+        public void InsercaoDuasVezesTest()
         {
 
             _dataContext.Produtos.Count().Should().Be(0);
-            await AddItemAsync();
-            await AddItemAsync();
+            AddItem();
+            AddItem();
             _dataContext.Produtos.Count().Should().Be(2);
         }
 
         [Fact]
-        public async Task UpdateTest()
+        public void UpdateTest()
         {
-            var produto = await AddItemAsync();
+            var produto = AddItem();
             var expectedText = "Produto XYZ";
             produto.Nome = expectedText;
             _dataContext.SaveChanges();
-            var actual = await _dataContext.Produtos.FirstAsync();
+            var actual = _dataContext.Produtos.First();
 
-            actual.Nome.Should().Be(expectedText);           
+            actual.Nome.Should().Be(expectedText);
         }
 
         [Fact]
-        public async Task DeleteTest()
+        public void DeleteTest()
         {
-            var produto = await AddItemAsync();
+            var produto = AddItem();
             _dataContext.Produtos.Count().Should().Be(1);
             _dataContext.Produtos.Remove(produto);
             _dataContext.SaveChanges();
             _dataContext.Produtos.Count().Should().Be(0);
-            
+
         }
 
-        public async Task<Produto> AddItemAsync()
+        public Produto AddItem()
         {
             Produto produto = new Produto()
             {
@@ -88,18 +88,18 @@ namespace Microservices.Data.Integration.Test
 
             _dataContext.Add(produto);
 
-            await _dataContext.SaveChangesAsync();
+            _dataContext.SaveChangesAsync().Wait();
             return produto;
         }
 
         public void Dispose()
         {
-            log.WriteLine("Drop Database");          
+            log.WriteLine("Drop Database");
 
             _dataContext.Database.EnsureDeleted();
             _dataContext.Dispose();
         }
 
-    
+
     }
 }
