@@ -1,11 +1,33 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Microservices.Repository.Interfaces
 {
-    public class RepositoryOptions
+    public interface IRepositoryOptions
     {
-        public string  ConnectionString { get; set; }
+        string ConnectionName { get; set; }
+
+        string ConnectionString { get; }
+    }
+    public class RepositoryOptions : IRepositoryOptions
+    {
+        private readonly IConfiguration configuration;
+
+        public RepositoryOptions(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public string ConnectionName { get; set; } = "Database";
+
+        public string ConnectionString
+        {
+            get
+            {
+                return configuration.GetConnectionString(ConnectionName);
+            }
+        }
     }
 }

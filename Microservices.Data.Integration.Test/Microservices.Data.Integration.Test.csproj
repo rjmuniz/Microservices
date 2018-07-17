@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
@@ -20,6 +21,7 @@
     <ProjectReference Include="..\Microservices.Data\Microservices.Data.csproj" />
     <ProjectReference Include="..\Microservices.Entities.Common\Microservices.Entities.Common.csproj" />
     <ProjectReference Include="..\Microservices.Entities\Microservices.Entities.csproj" />
+    <ProjectReference Include="..\Microservices.Repository.Dapper\Microservices.Repository.Dapper.csproj" />
     <ProjectReference Include="..\Microservices.Repository.Interfaces\Microservices.Repository.Interfaces.csproj" />
     <ProjectReference Include="..\Microservices.Repository\Microservices.Repository.SqlServer.csproj" />
   </ItemGroup>

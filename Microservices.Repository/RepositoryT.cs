@@ -4,18 +4,43 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Microservices.Repository
 {
-    public class Repository<TEntity>:IRepository<TEntity> where TEntity : class, IEntity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         protected readonly DbContext _context;
         public Repository(DbContext context)
         {
             _context = context;
         }
-        public virtual IEnumerable<TEntity> GetAll(string include = "")
+
+        private IQueryable<TEntity> Query
+        {
+            get { return Set.AsQueryable(); }
+        }
+
+        private DbSet<TEntity> Set
+        {
+            get { return _context.Set<TEntity>(); }
+        }
+
+
+
+
+        public virtual async Task<TEntity> FindByIdAsync(object entityId)
+        {
+            return await _context.FindAsync<TEntity>(entityId);
+        }
+
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Query.Where(predicate);
+        }
+
+        public virtual IQueryable<TEntity> FindAll(string include = "")
         {
             var query = Query;
             if (!string.IsNullOrEmpty(include))
@@ -28,22 +53,8 @@ namespace Microservices.Repository
             return query;
         }
 
-        public virtual IQueryable<TEntity> Query
-        {
-            get { return Set.AsQueryable(); }
-        }
 
-        private DbSet<TEntity> Set
-        {
-            get { return _context.Set<TEntity>(); }
-        }
-
-        public virtual TEntity GetById(int entityId)
-        {
-            return _context.Find<TEntity>(entityId);
-        }
-
-        public virtual async Task<TEntity> InsertEntityAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             if (!await CanSaveAsync(entity, true))
                 return entity;
@@ -63,10 +74,9 @@ namespace Microservices.Repository
 
             return entity;
         }
-        //todo: separar os eventos onsave e onupdate
-        public virtual async Task<TEntity> UpdateEntityAsync(int id, TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(object id, TEntity entity)
         {
-            var old = GetById(id);
+            var old = await FindByIdAsync(id);
 
             if (!await CanSaveAsync(entity, false))
                 return old;
@@ -77,12 +87,21 @@ namespace Microservices.Repository
 
             _context.Entry(old).CurrentValues.SetValues(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
 
             await AfterSaveAsync(entity, false);
 
             return entity;
+        }
+
+
+
+
+        public async Task RemoveAsync(TEntity entity)
+        {
+            Set.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public virtual async Task BeforeSaveAsync(TEntity entity, bool insert)
@@ -114,5 +133,7 @@ namespace Microservices.Repository
         {
             _context.Database.CommitTransaction();
         }
+
+
     }
 }

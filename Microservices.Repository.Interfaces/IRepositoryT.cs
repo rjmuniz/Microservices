@@ -2,25 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Microservices.Repository.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : IEntity
-    {        
-        IEnumerable<TEntity> GetAll(string include = "");
+    {
+        Task<TEntity> FindByIdAsync(object entityId);
+        IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> FindAll(string include = "");
 
-        IQueryable<TEntity> Query { get; }
+        Task<TEntity> AddAsync(TEntity entity);
+        Task<TEntity> UpdateAsync(object id, TEntity entity);
+        Task RemoveAsync(TEntity entity);
 
-
-        TEntity GetById(int entityId);
-
-        Task<TEntity> InsertEntityAsync(TEntity entity);
-        Task<TEntity> UpdateEntityAsync(int id, TEntity entity);
 
         Task BeforeSaveAsync(TEntity entity, bool insert);
 
         Task AfterSaveAsync(TEntity entity, bool insert);
+
 
         Task<bool> CanSaveAsync(TEntity entity, bool insert);
         void BeginTransation();

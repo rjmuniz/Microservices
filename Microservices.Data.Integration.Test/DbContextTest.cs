@@ -69,7 +69,7 @@ namespace Microservices.Data.Integration.Test
             var produto = AddItem();
             _dataContext.Produtos.Count().Should().Be(1);
             _dataContext.Produtos.Remove(produto);
-            _dataContext.SaveChanges();
+            _dataContext.SaveChangesAsync().Wait();
             _dataContext.Produtos.Count().Should().Be(0);
 
         }
