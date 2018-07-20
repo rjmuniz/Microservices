@@ -89,7 +89,8 @@ namespace Microservices.Repository
         public virtual async Task<TEntity> UpdateAsync(object id, TEntity entity)
         {
             if (entity == null) { throw new ArgumentNullException(nameof(entity)); }
-            var old = await FindByIdAsync(id);
+
+            var old = await FindByIdAsync( EntityHelper<TEntity>.GetTyped(id));
 
             if (typeof(ILogAlteracao).IsAssignableFrom(typeof(TEntity)))
             {

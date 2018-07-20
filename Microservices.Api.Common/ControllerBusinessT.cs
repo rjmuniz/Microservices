@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microservices.Api.Common
 {
-    public  class ControllerBusiness<TEntity> : ControllerBase where TEntity : class, IEntity
+    public class ControllerBusiness<TEntity> : ControllerBase where TEntity : class, IEntity
     {
         private readonly BusinessBase<TEntity> _business;
 
@@ -16,6 +16,8 @@ namespace Microservices.Api.Common
         {
             _business = business;
         }
+
+
         // GET api/values
         [HttpGet]
         public virtual async Task<ActionResult<IEnumerable<TEntity>>> GetAsync()
@@ -25,17 +27,8 @@ namespace Microservices.Api.Common
         // GET api/values/5
         [HttpGet("{id}")]
         public virtual async Task<ActionResult<TEntity>> GetAsync(string id)
-        {
-            object _id = null;
-            if (typeof(IEntityIdGuid).IsAssignableFrom(typeof(TEntity)))
-            {
-                _id = new Guid(id);
-            }
-            else
-                _id = int.Parse(id);
+            => await _business.FindByIdAsync(EntityHelper<TEntity>.GetTyped(id));
 
-            return await _business.FindByIdAsync(_id);
-        }
 
         // POST api/values
         [HttpPost]
@@ -44,12 +37,18 @@ namespace Microservices.Api.Common
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public virtual async Task<TEntity> PutAsync(object id, [FromBody] TEntity entity)
-            => await _business.UpdateEntityAsync(id, entity);
+        public virtual async Task<ActionResult<TEntity>> PutAsync(string id, [FromBody] TEntity entity)
+        {
+            var entityId = entity?.GetEntityId()?.ToString();
+            if (!entityId.Equals(id))
+                return NotFound($"Id:{id} != entityId:{entityId}");
+
+            return await _business.UpdateEntityAsync(EntityHelper<TEntity>.GetTyped(id), entity);
+        }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public virtual async Task Delete(object id) =>         
-            await _business.RemoveAsync(id);
+        public virtual async Task Delete(string id)
+            => await _business.RemoveAsync(EntityHelper<TEntity>.GetTyped(id));
     }
 }
