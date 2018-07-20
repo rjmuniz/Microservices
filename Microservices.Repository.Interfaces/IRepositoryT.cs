@@ -12,6 +12,7 @@ namespace Microservices.Repository.Interfaces
         Task<TEntity> FindByIdAsync(object entityId);
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> FindAll(string include = "");
+        Task<int> CountAsync();
 
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(object id, TEntity entity);

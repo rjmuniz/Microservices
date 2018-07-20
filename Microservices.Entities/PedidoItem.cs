@@ -16,7 +16,7 @@ namespace Microservices.Entities
 
 
         public int PedidoId { get; set; }
-        public Pedido Pedido { get; set; }
+        public virtual Pedido Pedido { get; set; }
 
         public decimal PrecoUnitario { get; set; }
 

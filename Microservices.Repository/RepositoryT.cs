@@ -1,4 +1,5 @@
-﻿using Microservices.Entities.Common;
+﻿using Microservices.Data;
+using Microservices.Entities.Common;
 using Microservices.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,8 +12,8 @@ namespace Microservices.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        protected readonly DbContext _context;
-        public Repository(DbContext context)
+        protected readonly DataContext _context;
+        public Repository(DataContext context)
         {
             _context = context;
         }
@@ -27,7 +28,10 @@ namespace Microservices.Repository
             get { return _context.Set<TEntity>(); }
         }
 
-
+        public async Task<int> CountAsync()
+        {
+            return await Set.CountAsync();
+        }
 
 
         public virtual async Task<TEntity> FindByIdAsync(object entityId)
@@ -56,6 +60,14 @@ namespace Microservices.Repository
 
         public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
+            if (entity == null) { throw new ArgumentNullException(nameof(entity)); }
+
+            if (typeof(ILogCadastro).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((ILogCadastro)entity).DataHoraCadastro = DateTime.Now;
+                //Todo: pegar id
+                ((ILogCadastro)entity).UsuarioCadastroId = _context.AdminUserId;
+            }
             if (!await CanSaveAsync(entity, true))
                 return entity;
 
@@ -76,7 +88,15 @@ namespace Microservices.Repository
         }
         public virtual async Task<TEntity> UpdateAsync(object id, TEntity entity)
         {
+            if (entity == null) { throw new ArgumentNullException(nameof(entity)); }
             var old = await FindByIdAsync(id);
+
+            if (typeof(ILogAlteracao).IsAssignableFrom(typeof(TEntity)))
+            {
+                ((ILogAlteracao)entity).DataHoraAlteracao = DateTime.Now;
+                //Todo: pegar id
+                ((ILogAlteracao)entity).UsuarioAlteracaoId = _context.AdminUserId;
+            }
 
             if (!await CanSaveAsync(entity, false))
                 return old;

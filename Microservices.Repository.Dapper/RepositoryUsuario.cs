@@ -115,5 +115,10 @@ namespace Microservices.Repository.Dapper
                 db.Execute(sql);
             }
         }
+
+        public Task<int> CountAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
