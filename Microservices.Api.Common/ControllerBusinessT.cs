@@ -27,7 +27,11 @@ namespace Microservices.Api.Common
         // GET api/values/5
         [HttpGet("{id}")]
         public virtual async Task<ActionResult<TEntity>> GetAsync(string id)
-            => await _business.FindByIdAsync(EntityHelper<TEntity>.GetTyped(id));
+        {
+            var result = await _business.FindByIdAsync(EntityHelper<TEntity>.GetTyped(id));
+            if (result == null) return NotFound($"Not Found {typeof(TEntity).Name}({id})");
+            return new ObjectResult(result);
+        }
 
 
         // POST api/values
