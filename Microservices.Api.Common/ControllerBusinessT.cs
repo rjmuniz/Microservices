@@ -29,7 +29,10 @@ namespace Microservices.Api.Common
         public virtual async Task<ActionResult<TEntity>> GetAsync(string id)
         {
             var result = await _business.FindByIdAsync(EntityHelper<TEntity>.GetTyped(id));
-            if (result == null) return NotFound($"Not Found {typeof(TEntity).Name}({id})");
+
+            if (result == null)
+                return NotFound($"Not Found {typeof(TEntity).Name}({id})");
+
             return new ObjectResult(result);
         }
 
