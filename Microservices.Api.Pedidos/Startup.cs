@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microservices.Business.Common;
+using Microservices.Business.Pedidos;
+using Microservices.Connectors.Common;
+using Microservices.Connectors.Produtos;
+using Microservices.Connectors.Produtos.ExternalInterface;
+using Microservices.Data;
+using Microservices.Entities;
+using Microservices.Repository;
+using Microservices.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Microservices.Api.Pedidos
 {
@@ -25,7 +37,29 @@ namespace Microservices.Api.Pedidos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDbContext<DataContext>(d => d.UseSqlServer(Configuration.GetConnectionString("database")));
+            services.AddScoped<IRepository<Pedido>, Repository<Pedido>>();
+
+            Endpoints endpoints = new Endpoints(new Dictionary<Endpoints.EndpointKey, string>() { { Endpoints.EndpointKey.Produtos, "http://localhost:61807" } });
+            services.AddSingleton(endpoints);
+            services.AddHttpClient<IHttpProduto, HttpProduct>();
+
+            services.AddScoped<IBusinessBase<Pedido>, BusinessPedidos>();
+
+
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.Formatting = Formatting.Indented;
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver
+                    {
+                        NamingStrategy = new SnakeCaseNamingStrategy()
+                    };
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +73,14 @@ namespace Microservices.Api.Pedidos
             {
                 app.UseHsts();
             }
+
+
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+                context.Database.EnsureCreated();
+            }
+
 
             app.UseHttpsRedirection();
             app.UseMvc();

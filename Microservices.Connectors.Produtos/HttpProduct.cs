@@ -13,12 +13,12 @@ namespace Microservices.Connectors.Produtos
         public HttpProduct(HttpClient client, Endpoints endpoints)
         {
             _client = client;
-            client.BaseAddress = new Uri(endpoints.GetEndpoint("produto"));// "http://localhost:52989/api/
+            client.BaseAddress = new Uri(endpoints.GetEndpoint(Endpoints.EndpointKey.Produtos));
 
         }
         public async Task<Produto> GetProdutoAsync(int id)
         {
-            var response = await _client.GetAsync($"produtos/{id}");
+            var response = await _client.GetAsync($"api/produtos/{id}");
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadObjectAsync<Produto>();
         }

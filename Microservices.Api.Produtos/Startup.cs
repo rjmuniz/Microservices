@@ -34,10 +34,8 @@ namespace Microservices.Api.Produtos
           
             services.AddDbContext<DataContext>(d => d.UseSqlServer(Configuration.GetConnectionString("database")));
             services.AddScoped<IRepository<Produto>, Repository<Produto>>();
-
-
-            services.AddScoped<BusinessBase<Produto>>();
-            //services.AddScoped<IBusinessBase<Produto>, BusinessBase<Produto>>();
+           
+            services.AddScoped<IBusinessBase<Produto>, BusinessBase<Produto>>();
 
 
 

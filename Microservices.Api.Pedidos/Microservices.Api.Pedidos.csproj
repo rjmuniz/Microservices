@@ -14,7 +14,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Microservices.Api.Common\Microservices.Api.Common.csproj" />
+    <ProjectReference Include="..\Microservices.Business.Pedidos\Microservices.Business.Pedidos.csproj" />
+    <ProjectReference Include="..\Microservices.Connectors.Produtos\Microservices.Connectors.Produtos.csproj" />
+    <ProjectReference Include="..\Microservices.Data\Microservices.Data.csproj" />
     <ProjectReference Include="..\Microservices.Entities\Microservices.Entities.csproj" />
+    <ProjectReference Include="..\Microservices.Repository\Microservices.Repository.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

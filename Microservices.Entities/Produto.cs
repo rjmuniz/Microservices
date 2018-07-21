@@ -1,6 +1,7 @@
 ﻿using Microservices.Entities.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Microservices.Entities
 {
@@ -18,7 +19,8 @@ namespace Microservices.Entities
 
 
         public Guid UsuarioCadastroId { get; set; }
-        public virtual Usuario UsuarioCadastro { get; set; }
+        [ForeignKey("UsuarioCadastroId")]
+        public Usuario UsuarioCadastro { get; set; }
         public DateTime DataHoraCadastro { get; set; }
 
     }

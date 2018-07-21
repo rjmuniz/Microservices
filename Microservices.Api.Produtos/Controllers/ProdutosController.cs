@@ -13,7 +13,7 @@ namespace Microservices.Api.Produtos.Controllers
     [ApiController]
     public class ProdutosController : ControllerBusiness<Produto>
     {
-        public ProdutosController(BusinessBase<Produto> business) : base(business)
+        public ProdutosController(IBusinessBase<Produto> business) : base(business)
         {
         }
     }

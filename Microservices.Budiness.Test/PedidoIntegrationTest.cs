@@ -42,7 +42,7 @@ namespace Microservices.Business.Test
             var p = await AddPedido();
             Assert.Equal(total + 1, await _business.CountAsync());
             var p2 = await _business.FindByIdAsync(p.Id);
-            Assert.Equal(3, p2.PedidoItems.Count);
+            Assert.Equal(3, p2.PedidoItens.Count);
         }
         [Fact]
         public async Task FindPedidoTest()
@@ -52,7 +52,7 @@ namespace Microservices.Business.Test
             var p = await AddPedido();
             Assert.Equal(total + 1, await _business.CountAsync());
             var p2 = await _business.FindByIdAsync(p.Id);
-            Assert.Equal(3, p2.PedidoItems.Count);
+            Assert.Equal(3, p2.PedidoItens.Count);
         }
 
 
@@ -67,7 +67,7 @@ namespace Microservices.Business.Test
             var p = new Pedido()
             {
                 ClienteId = 1,
-                PedidoItems = new List<PedidoItem>()
+                PedidoItens = new List<PedidoItem>()
                 {
                      new PedidoItem//12,5
                      {

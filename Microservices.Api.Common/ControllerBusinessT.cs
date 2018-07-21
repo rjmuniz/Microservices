@@ -1,6 +1,7 @@
 ﻿using Microservices.Business.Common;
 using Microservices.Entities.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Microservices.Api.Common
 {
     public class ControllerBusiness<TEntity> : ControllerBase where TEntity : class, IEntity
     {
-        private readonly BusinessBase<TEntity> _business;
+        private readonly IBusinessBase<TEntity> _business;
 
-        public ControllerBusiness(BusinessBase<TEntity> business)
+        public ControllerBusiness(IBusinessBase<TEntity> business)
         {
             _business = business;
         }
@@ -39,8 +40,17 @@ namespace Microservices.Api.Common
 
         // POST api/values
         [HttpPost]
-        public virtual async Task<TEntity> PostAsync([FromBody] TEntity entity)
-            => await _business.AddAsync(entity);
+        public virtual async Task<ActionResult<TEntity>> PostAsync([FromBody] TEntity entity)
+        {
+            try
+            {
+                return await _business.AddAsync(entity);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.ExceptionAsString());
+            }
+        }
 
         // PUT api/values/5
         [HttpPut("{id}")]

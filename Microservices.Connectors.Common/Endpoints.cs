@@ -5,13 +5,19 @@ namespace Microservices.Connectors.Common
 {
     public class Endpoints
     {
-        private readonly IDictionary<string, string> _endpoints;
+        public enum EndpointKey
+        {
+            Produtos
+        }
 
-        public Endpoints(IDictionary<string, string> endpoints)
+
+        private readonly IDictionary<EndpointKey, string> _endpoints;
+
+        public Endpoints(IDictionary<EndpointKey, string> endpoints)
         {
             _endpoints = endpoints ?? throw new ArgumentNullException(nameof(endpoints));
         }
 
-        public string GetEndpoint(string name) => _endpoints.ContainsKey(name) ? _endpoints[name] : throw new ArgumentOutOfRangeException(name);
+        public string GetEndpoint(EndpointKey key) => _endpoints.ContainsKey(key) ? _endpoints[key] : throw new ArgumentOutOfRangeException(key.ToString());
     }
 }

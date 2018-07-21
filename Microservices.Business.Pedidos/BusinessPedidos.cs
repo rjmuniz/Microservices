@@ -24,13 +24,13 @@ namespace Microservices.Business.Pedidos
             entity.Vendedor = System.Security.Principal.GenericPrincipal.Current?.Identity?.Name;
 
             //get Product Value
-            foreach (var i in entity.PedidoItems)
+            foreach (var i in entity.PedidoItens)
             {
                 i.Produto = await _httpProduto.GetProdutoAsync(i.ProdutoId);
                 i.PrecoUnitario = i.Produto.Preco;
             }
 
-            entity.ValorTotal = entity.PedidoItems.Sum(d => d.TotalParcial);
+            entity.ValorTotal = entity.PedidoItens.Sum(d => d.TotalParcial);
 
             //
 

@@ -7,16 +7,17 @@ using System.Text;
 
 namespace Microservices.Entities
 {
-    public class PedidoItem : IEntityIdGuid
+    public class PedidoItem : IEntityId
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
 
 
-        public int PedidoId { get; set; }
-        public virtual Pedido Pedido { get; set; }
+        public Guid PedidoId { get; set; }
+        [ForeignKey("PedidoId")]
+        public Pedido Pedido { get; set; }
 
         public decimal PrecoUnitario { get; set; }
 

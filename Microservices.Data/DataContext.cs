@@ -21,14 +21,33 @@ namespace Microservices.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Usuario>().HasData(new Usuario
             {
                 Id = AdminUserId,
                 Nome = "Admin",
                 Inativo = false
             });
-            //modelBuilder.Entity<Produto>().HasData(
-            //    new Produto { Id = 1, Nome = "Mesa", Preco = 200 },
+            modelBuilder.Entity<Cliente>().HasData(new Cliente
+            {
+                Id = 1,
+                Nome = "Microservices",
+                Inativo = false
+            });
+            modelBuilder.Entity<Pedido>()
+              .HasOne(p => p.Cliente).WithMany().OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Pedido>()
+              .HasOne(p => p.UsuarioCadastro).WithMany().OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<PedidoItem>()
+                .HasOne(p => p.Produto)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PedidoItem>()
+                .HasOne(p => p.Pedido)
+                .WithMany(p => p.PedidoItens)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Produto>().HasData(
+                new Produto { Id = 1, Nome = "Mesa", Preco = 200, UsuarioCadastroId = AdminUserId });
             //    new Produto { Id = 2, Nome = "Mesa Modelo velho", Inativo = true, Preco = 70.5M },
             //    new Produto { Id = 4, Nome = "note", Inativo = false, Preco = 2500 });
         }
