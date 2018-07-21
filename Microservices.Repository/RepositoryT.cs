@@ -36,7 +36,7 @@ namespace Microservices.Repository
 
         public virtual async Task<TEntity> FindByIdAsync(object entityId)
         {
-            return await _context.FindAsync<TEntity>(entityId);
+            return await _context.Set<TEntity>().FindAsync(entityId);
         }
 
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -71,8 +71,8 @@ namespace Microservices.Repository
             if (!await CanSaveAsync(entity, true))
                 return entity;
 
-            var entry = _context.Entry(entity);
-            entry.State = EntityState.Added;
+            var entry = await _context.AddAsync(entity);
+            //entry.State = EntityState.Added;
 
             await BeforeSaveAsync(entity, true);
 

@@ -18,6 +18,11 @@ namespace Microservices.Business.Pedidos
             _httpProduto = httpProduto;
         }
 
+        public override Task<IQueryable<Pedido>> FindAllAsync()
+        {
+            return Task.FromResult(_repository.FindAll("PedidoItens"));
+        }
+
         public override async Task BeforeAddAsync(Pedido entity, bool insert)
         {
             entity.Data = DateTime.Now;
@@ -26,8 +31,8 @@ namespace Microservices.Business.Pedidos
             //get Product Value
             foreach (var i in entity.PedidoItens)
             {
-                i.Produto = await _httpProduto.GetProdutoAsync(i.ProdutoId);
-                i.PrecoUnitario = i.Produto.Preco;
+                var produto = await _httpProduto.GetProdutoAsync(i.ProdutoId);
+                i.PrecoUnitario = produto.Preco;
             }
 
             entity.ValorTotal = entity.PedidoItens.Sum(d => d.TotalParcial);

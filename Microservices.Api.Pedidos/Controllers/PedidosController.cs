@@ -16,5 +16,6 @@ namespace Microservices.Api.Pedidos.Controllers
         public PedidosController(IBusinessBase<Pedido> business) : base(business)
         {
         }
+        
     }
 }

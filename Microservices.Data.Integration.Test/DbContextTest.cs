@@ -14,6 +14,7 @@ namespace Microservices.Data.Integration.Test
     public class DbContextTest : IDisposable
     {
         private readonly DataContext _dataContext;
+        private int Id = 2;
         private readonly ITestOutputHelper log;
 
         public DbContextTest(ITestOutputHelper log)
@@ -25,6 +26,7 @@ namespace Microservices.Data.Integration.Test
             _dataContext = new DataContext(options);
 
             _dataContext.Database.EnsureCreated();
+            _dataContext.Database.ExecuteSqlCommand("delete produtos");
 
 
 
@@ -58,7 +60,7 @@ namespace Microservices.Data.Integration.Test
             var expectedText = "Produto XYZ";
             produto.Nome = expectedText;
             _dataContext.SaveChanges();
-            var actual = _dataContext.Produtos.First();
+            var actual = _dataContext.Produtos.Find(produto.Id);
 
             actual.Nome.Should().Be(expectedText);
         }
@@ -78,10 +80,11 @@ namespace Microservices.Data.Integration.Test
         {
             Produto produto = new Produto()
             {
+                Id=Id++,
                 Nome = "Produto1",
                 Preco = 10.45M,
                 Inativo = false,
-                UsuarioCadastroId = Guid.NewGuid(),
+                UsuarioCadastroId = _dataContext.AdminUserId,
                 DataHoraCadastro = DateTime.Today
             };
 

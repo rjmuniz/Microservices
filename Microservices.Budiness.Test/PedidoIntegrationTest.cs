@@ -24,6 +24,7 @@ namespace Microservices.Business.Test
 
             DbContextOptions dbContextOptions = new DbContextOptionsBuilder<DataContext>().UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ef_core_test;Integrated Security=True;").Options;
             _dataContext = new DataContext(dbContextOptions);
+            _dataContext.Database.EnsureCreated();
             _business = new BusinessPedidos(new Repository<Pedido>(_dataContext), httpProduto.Object);
 
         }
@@ -42,7 +43,7 @@ namespace Microservices.Business.Test
             var p = await AddPedido();
             Assert.Equal(total + 1, await _business.CountAsync());
             var p2 = await _business.FindByIdAsync(p.Id);
-            Assert.Equal(3, p2.PedidoItens.Count);
+            Assert.Equal(1, p2.PedidoItens.Count);
         }
         [Fact]
         public async Task FindPedidoTest()
@@ -52,7 +53,7 @@ namespace Microservices.Business.Test
             var p = await AddPedido();
             Assert.Equal(total + 1, await _business.CountAsync());
             var p2 = await _business.FindByIdAsync(p.Id);
-            Assert.Equal(3, p2.PedidoItens.Count);
+            Assert.Equal(1, p2.PedidoItens.Count);
         }
 
 
@@ -72,21 +73,11 @@ namespace Microservices.Business.Test
                      new PedidoItem//12,5
                      {
                           Desconto=10,
-                          ProdutoId = 5,
+                          ProdutoId = 1,
                           Quantidade = 1
-                     },
-                     new PedidoItem //35
-                     {
-                           ProdutoId = 7,
-                           Quantidade = 2
-                     },
-                     new PedidoItem//90
-                     {
-                           ProdutoId = 8,
-                            Quantidade = 5
                      }
                 },
-                UsuarioCadastroId = new Guid("6FD8D788-7955-4A24-AD72-C2F189923699")
+                UsuarioCadastroId =_dataContext.AdminUserId
             };
             return await _business.AddAsync(p);
         }

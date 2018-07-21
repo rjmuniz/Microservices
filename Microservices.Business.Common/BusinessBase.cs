@@ -8,7 +8,7 @@ namespace Microservices.Business.Common
 {
     public  class BusinessBase<TEntity> : IBusinessBase<TEntity> where TEntity : class, IEntity
     {
-        private readonly IRepository<TEntity> _repository;
+        protected readonly IRepository<TEntity> _repository;
       
         public BusinessBase(IRepository<TEntity> repository)
         {
@@ -21,7 +21,7 @@ namespace Microservices.Business.Common
         public async Task<int> CountAsync()
             => await _repository.CountAsync();
 
-        public async Task<IQueryable<TEntity>> FindAllAsync()
+        public virtual async Task<IQueryable<TEntity>> FindAllAsync()
             => await Task.FromResult(_repository.FindAll());
 
         public async Task<IQueryable<TEntity>> FindAllActivesAsync()
