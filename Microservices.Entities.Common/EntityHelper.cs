@@ -17,7 +17,7 @@ namespace Microservices.Entities.Common
             else if (typeof(IEntityId).IsAssignableFrom(typeof(TEntity)))
                 return int.Parse(id);
             else
-                throw new ArgumentOutOfRangeException(nameof(id));
+                return id;
         }
         public static bool IsIdGuid()
         {

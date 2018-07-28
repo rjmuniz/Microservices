@@ -6,11 +6,8 @@ using System.Text;
 
 namespace Microservices.Entities
 {
-    public class Cliente : IEntityId, IEntityInativo
+    public class Cliente : PessoaJuridica
     {
-        [Key]
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public bool Inativo { get; set; }
+        public DateTime PrimeiraCompra { get; set; }
     }
 }

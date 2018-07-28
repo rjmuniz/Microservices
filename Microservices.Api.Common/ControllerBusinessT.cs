@@ -56,11 +56,15 @@ namespace Microservices.Api.Common
         [HttpPut("{id}")]
         public virtual async Task<ActionResult<TEntity>> PutAsync(string id, [FromBody] TEntity entity)
         {
-            var entityId = entity?.GetEntityId()?.ToString();
-            if (!entityId.Equals(id))
-                return NotFound($"Id:{id} != entityId:{entityId}");
-
-            return await _business.UpdateEntityAsync(EntityHelper<TEntity>.GetTyped(id), entity);
+            if (typeof(IEntityBusiness).IsAssignableFrom(typeof(TEntity)))
+                return await _business.UpdateEntityAsync(id, entity);
+            else
+            {
+                var entityId = entity?.GetEntityId()?.ToString();
+                if (!entityId.Equals(id))
+                    return NotFound($"Id:{id} != entityId:{entityId}");
+                return await _business.UpdateEntityAsync(EntityHelper<TEntity>.GetTyped(id), entity);
+            }            
         }
 
         // DELETE api/values/5

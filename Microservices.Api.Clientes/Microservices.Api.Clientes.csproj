@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microservices.Api.Common\Microservices.Api.Common.csproj" />
+    <ProjectReference Include="..\Microservices.Business.Clientes\Microservices.Business.Clientes.csproj" />
+    <ProjectReference Include="..\Microservices.Data\Microservices.Data.csproj" />
+    <ProjectReference Include="..\Microservices.Repository\Microservices.Repository.SqlServer.csproj" />
+  </ItemGroup>
+
+</Project>

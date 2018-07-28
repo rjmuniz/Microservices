@@ -9,24 +9,23 @@ namespace Microservices.Repository.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : IEntity
     {
-        Task<TEntity> FindByIdAsync(object entityId);
+        Task<TEntity> FindByIdAsync(object entityId, string include = "");
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> FindAll(string include = "");
         Task<int> CountAsync();
 
-        Task<TEntity> AddAsync(TEntity entity);
-        Task<TEntity> UpdateAsync(object id, TEntity entity);
+        Task AddAsync(TEntity entity);
+        Task UpdateAsync(object id, TEntity entity);
         Task RemoveAsync(TEntity entity);
 
 
-        Task BeforeSaveAsync(TEntity entity, bool insert);
+        Task BeforeSaveChangesAsync();
 
-        Task AfterSaveAsync(TEntity entity, bool insert);
+        Task AfterSaveChangesAsync();
 
 
         Task<bool> CanSaveAsync(TEntity entity, bool insert);
-        void BeginTransation();
-        void RollbackTransation();
-        void CommitTransaction();
+
+        Task Commit();
     }
 }

@@ -34,9 +34,21 @@ namespace Microservices.Repository
         }
 
 
-        public virtual async Task<TEntity> FindByIdAsync(object entityId)
+        public virtual async Task<TEntity> FindByIdAsync(object entityId, string include = "")
         {
-            return await _context.Set<TEntity>().FindAsync(entityId);
+            var query = _context.Set<TEntity>().AsQueryable();
+            if (!string.IsNullOrEmpty(include))
+            {
+                query = query.Include(include);
+            }
+
+            if (typeof(IEntityId).IsAssignableFrom(typeof(TEntity)))
+                return await query.SingleOrDefaultAsync(e => ((IEntityId)e).Id == int.Parse(entityId.ToString()));
+            else if (typeof(IEntityIdGuid).IsAssignableFrom(typeof(TEntity)))
+                return await query.SingleOrDefaultAsync(e => ((IEntityIdGuid)e).Id == Guid.Parse(entityId.ToString()));
+            else
+                return await _context.Set<TEntity>().FindAsync(entityId);
+
         }
 
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -58,7 +70,7 @@ namespace Microservices.Repository
         }
 
 
-        public virtual async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             if (entity == null) { throw new ArgumentNullException(nameof(entity)); }
 
@@ -69,28 +81,17 @@ namespace Microservices.Repository
                 ((ILogCadastro)entity).UsuarioCadastroId = _context.AdminUserId;
             }
             if (!await CanSaveAsync(entity, true))
-                return entity;
+                return;
 
-            var entry = await _context.AddAsync(entity);
-            //entry.State = EntityState.Added;
-
-            await BeforeSaveAsync(entity, true);
+            await _context.AddAsync(entity);
 
 
-            _context.SaveChanges();
-
-
-
-            await AfterSaveAsync(entity, true);
-
-
-            return entity;
         }
-        public virtual async Task<TEntity> UpdateAsync(object id, TEntity entity)
+        public virtual async Task UpdateAsync(object id, TEntity entity)
         {
             if (entity == null) { throw new ArgumentNullException(nameof(entity)); }
 
-            var old = await FindByIdAsync( EntityHelper<TEntity>.GetTyped(id));
+            var old = await FindByIdAsync(EntityHelper<TEntity>.GetTyped(id));
 
             if (typeof(ILogAlteracao).IsAssignableFrom(typeof(TEntity)))
             {
@@ -100,20 +101,10 @@ namespace Microservices.Repository
             }
 
             if (!await CanSaveAsync(entity, false))
-                return old;
-
-            await BeforeSaveAsync(entity, false);
-
-
+                return;
 
             _context.Entry(old).CurrentValues.SetValues(entity);
 
-            await _context.SaveChangesAsync();
-
-
-            await AfterSaveAsync(entity, false);
-
-            return entity;
         }
 
 
@@ -125,12 +116,12 @@ namespace Microservices.Repository
             await _context.SaveChangesAsync();
         }
 
-        public virtual async Task BeforeSaveAsync(TEntity entity, bool insert)
+        public virtual async Task BeforeSaveChangesAsync()
         {
             await Task.CompletedTask;
         }
 
-        public virtual async Task AfterSaveAsync(TEntity entity, bool insert)
+        public virtual async Task AfterSaveChangesAsync()
         {
             await Task.CompletedTask;
         }
@@ -140,19 +131,15 @@ namespace Microservices.Repository
             return await Task.FromResult(true);
         }
 
-        public void BeginTransation()
-        {
-            _context.Database.BeginTransaction();
-        }
 
-        public void RollbackTransation()
-        {
-            _context.Database.RollbackTransaction();
-        }
 
-        public void CommitTransaction()
+        public virtual async Task Commit()
         {
-            _context.Database.CommitTransaction();
+            await BeforeSaveChangesAsync();
+
+            _context.SaveChanges();
+
+            await AfterSaveChangesAsync();
         }
 
 

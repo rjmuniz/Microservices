@@ -45,7 +45,8 @@ namespace Microservices.Business.Common
 
             await BeforeAddAsync(entity, true);
 
-            entity = await _repository.AddAsync(entity);
+            await _repository.AddAsync(entity);
+            await _repository.Commit();
 
             await AfterAddedAsync(entity, true);
 

@@ -35,21 +35,27 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Business.Pedi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.BusinessConnectors", "4.BusinessConnectors", "{B231DB74-BDC8-437A-923D-7AEAE0BE66A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Connectors.Common", "Microservices.Connectors.Common\Microservices.Connectors.Common.csproj", "{49D4824F-1A9B-473C-95E4-17810A2FFD95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Connectors.Common", "Microservices.Connectors.Common\Microservices.Connectors.Common.csproj", "{49D4824F-1A9B-473C-95E4-17810A2FFD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Connectors.Produtos.ExternalInterface", "Microservices.Connectors.Produtos.ExternalInterface\Microservices.Connectors.Produtos.ExternalInterface.csproj", "{8975E8EA-759F-42B3-9E20-65C4B6EF64A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Connectors.Produtos.ExternalInterface", "Microservices.Connectors.Produtos.ExternalInterface\Microservices.Connectors.Produtos.ExternalInterface.csproj", "{8975E8EA-759F-42B3-9E20-65C4B6EF64A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Connectors.Produtos", "Microservices.Connectors.Produtos\Microservices.Connectors.Produtos.csproj", "{921D99E2-FC44-448F-BAC9-A4BC89BE246F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Connectors.Produtos", "Microservices.Connectors.Produtos\Microservices.Connectors.Produtos.csproj", "{921D99E2-FC44-448F-BAC9-A4BC89BE246F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Business.Test", "Microservices.Budiness.Test\Microservices.Business.Test.csproj", "{5452C7AD-DA98-4228-96C8-6A4065E54B0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Business.Test", "Microservices.Budiness.Test\Microservices.Business.Test.csproj", "{5452C7AD-DA98-4228-96C8-6A4065E54B0F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.APIs", "5.APIs", "{1CB98D32-29E8-411D-9B90-6700BAABDE39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Api.Common", "Microservices.Api.Common\Microservices.Api.Common.csproj", "{DCF1AA3A-4554-46BC-A8E7-39029FC27A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Api.Common", "Microservices.Api.Common\Microservices.Api.Common.csproj", "{DCF1AA3A-4554-46BC-A8E7-39029FC27A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Api.Produtos", "Microservices.Api.Produtos\Microservices.Api.Produtos.csproj", "{A1423193-1F82-4489-A21E-FE27057CAF5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Api.Produtos", "Microservices.Api.Produtos\Microservices.Api.Produtos.csproj", "{A1423193-1F82-4489-A21E-FE27057CAF5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Api.Pedidos", "Microservices.Api.Pedidos\Microservices.Api.Pedidos.csproj", "{B0B38C76-4715-4B72-B41A-22394350DE6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Api.Pedidos", "Microservices.Api.Pedidos\Microservices.Api.Pedidos.csproj", "{B0B38C76-4715-4B72-B41A-22394350DE6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Business.Clientes", "Microservices.Business.Clientes\Microservices.Business.Clientes.csproj", "{415B122C-7FCF-41AC-BD9D-1B0EEB847F25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Api.Clientes", "Microservices.Api.Clientes\Microservices.Api.Clientes.csproj", "{EAC17CBD-C328-4A1A-B061-C39559FA00D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C20FC11-E293-4523-9971-5F3F3B563866}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +127,14 @@ Global
 		{B0B38C76-4715-4B72-B41A-22394350DE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0B38C76-4715-4B72-B41A-22394350DE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0B38C76-4715-4B72-B41A-22394350DE6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{415B122C-7FCF-41AC-BD9D-1B0EEB847F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415B122C-7FCF-41AC-BD9D-1B0EEB847F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415B122C-7FCF-41AC-BD9D-1B0EEB847F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415B122C-7FCF-41AC-BD9D-1B0EEB847F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAC17CBD-C328-4A1A-B061-C39559FA00D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAC17CBD-C328-4A1A-B061-C39559FA00D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAC17CBD-C328-4A1A-B061-C39559FA00D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAC17CBD-C328-4A1A-B061-C39559FA00D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,9 +154,12 @@ Global
 		{8975E8EA-759F-42B3-9E20-65C4B6EF64A5} = {B231DB74-BDC8-437A-923D-7AEAE0BE66A3}
 		{921D99E2-FC44-448F-BAC9-A4BC89BE246F} = {B231DB74-BDC8-437A-923D-7AEAE0BE66A3}
 		{5452C7AD-DA98-4228-96C8-6A4065E54B0F} = {5FEC406B-4264-45D6-B2FD-8087EECEA077}
-		{DCF1AA3A-4554-46BC-A8E7-39029FC27A70} = {1CB98D32-29E8-411D-9B90-6700BAABDE39}
+		{DCF1AA3A-4554-46BC-A8E7-39029FC27A70} = {7C20FC11-E293-4523-9971-5F3F3B563866}
 		{A1423193-1F82-4489-A21E-FE27057CAF5F} = {1CB98D32-29E8-411D-9B90-6700BAABDE39}
 		{B0B38C76-4715-4B72-B41A-22394350DE6A} = {1CB98D32-29E8-411D-9B90-6700BAABDE39}
+		{415B122C-7FCF-41AC-BD9D-1B0EEB847F25} = {420A0BE4-8BB0-4B42-9228-4F4D26DA33D6}
+		{EAC17CBD-C328-4A1A-B061-C39559FA00D1} = {1CB98D32-29E8-411D-9B90-6700BAABDE39}
+		{7C20FC11-E293-4523-9971-5F3F3B563866} = {1CB98D32-29E8-411D-9B90-6700BAABDE39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {34C260F7-A929-4F81-9639-FD0B292CACD4}

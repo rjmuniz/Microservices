@@ -104,7 +104,9 @@ namespace Microservices.Data.Integration.Test
                 Id = Guid.NewGuid(),
                 Nome = "test"
             };
-            return await _repository.AddAsync(usuario);
+            await _repository.AddAsync(usuario);
+            await _repository.Commit();
+            return usuario;
         }
 
         public void Dispose()

@@ -3,6 +3,7 @@ using Microservices.Entities;
 using Microservices.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -13,6 +14,17 @@ namespace Microservices.Repository.Dapper
     public class RepositoryUsuario : IRepository<Usuario>
     {
         private const string TableName = "Usuario";
+        private IDbConnection internalConnection;
+        private IDbConnection Connection
+        {
+            get
+            {
+                if (internalConnection == null)
+                    internalConnection = _databaseConfig.GetConnection();
+                return internalConnection;
+            }
+        }
+        private IDbTransaction Transaction;
 
         private readonly DatabaseConfig _databaseConfig;
 
@@ -24,55 +36,42 @@ namespace Microservices.Repository.Dapper
                 "CREATE TABLE Usuario (Id UNIQUEIDENTIFIER PRIMARY KEY, NOME VARCHAR(100), Inativo bit)").Wait();
 
         }
-        public async Task<Usuario> AddAsync(Usuario entity)
+
+
+        public async Task AddAsync(Usuario entity)
         {
-            using (var db = _databaseConfig.GetConnection())
-            {
-
-                if (entity.Id == Guid.Empty)
-                    entity.Id = Guid.NewGuid();
-                var parameters = new DynamicParameters();
-                parameters.Add("Id", entity.Id);
-                parameters.Add("Nome", entity.Nome);
-                parameters.Add("Inativo", entity.Inativo);
-
-                await db.ExecuteAsync($"INSERT INTO [{TableName}](Id, Nome, Inativo) VALUES (@Id, @Nome, @Inativo)", parameters);
+            CreateTransaction();
 
 
-                return await FindByIdAsync(entity.Id);
-            }
+            if (entity.Id == Guid.Empty)
+                entity.Id = Guid.NewGuid();
+            var parameters = new DynamicParameters();
+            parameters.Add("Id", entity.Id);
+            parameters.Add("Nome", entity.Nome);
+            parameters.Add("Inativo", entity.Inativo);
+
+            await Connection.ExecuteAsync($"INSERT INTO [{TableName}](Id, Nome, Inativo) VALUES (@Id, @Nome, @Inativo)", parameters);
+
+
         }
 
-        public async Task<Usuario> FindByIdAsync(object entityId)
+        private void CreateTransaction()
+        {
+            if (Transaction == null)
+                Transaction = Connection.BeginTransaction();
+        }
+
+
+        public async Task<Usuario> FindByIdAsync(object entityId, string include = "")
         {
             using (var db = _databaseConfig.GetConnection())
             {
-
                 return await db.QuerySingleAsync<Usuario>($"select * from {TableName} where Id = @id", new { id = entityId });
             }
         }
 
-        public Task AfterSaveAsync(Usuario entity, bool insert)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task BeforeSaveAsync(Usuario entity, bool insert)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void BeginTransation()
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<bool> CanSaveAsync(Usuario entity, bool insert)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CommitTransaction()
         {
             throw new NotImplementedException();
         }
@@ -98,12 +97,8 @@ namespace Microservices.Repository.Dapper
             throw new NotImplementedException();
         }
 
-        public void RollbackTransation()
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Usuario> UpdateAsync(object id, Usuario entity)
+        public Task UpdateAsync(object id, Usuario entity)
         {
             throw new NotImplementedException();
         }
@@ -120,5 +115,24 @@ namespace Microservices.Repository.Dapper
         {
             throw new NotImplementedException();
         }
+
+        public Task BeforeSaveChangesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AfterSaveChangesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task Commit()
+        {
+            Transaction.Commit();
+            Transaction = null;
+            await Task.CompletedTask;
+        }
+
+
     }
 }
